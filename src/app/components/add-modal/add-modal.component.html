@@ -1,0 +1,86 @@
+<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{ display: display }"
+  *ngIf="book"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add book</h5>
+      </div>
+      <div class="modal-body">
+        <form #addForm="ngForm" (ngSubmit)="onSubmit(addForm)">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              type="text"
+              maxlength="50"
+              required
+              name="title"
+              class="form-control"
+              [(ngModel)]="book.title"
+              #title="ngModel"
+            />
+            <div *ngIf="title.invalid && title.touched">
+              <div *ngIf="title.errors?.['required']">Title is required.</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input
+              type="text"
+              (input)="checkDateValidation($event)"
+              pattern="[0-9]*"
+              class="form-control"
+              name="date"
+              [(ngModel)]="book.date"
+              required
+              maxlength="4"
+              minlength="4"
+              #date="ngModel"
+            />
+            <div *ngIf="date.invalid && date.touched">
+              <div *ngIf="date.errors?.['required']">Date is required.</div>
+              <div *ngIf="date.errors?.['minlength']">
+                Date must be 4 characters long.
+              </div>
+              <div *ngIf="date.errors?.['pattern']">
+                Date must contain only numbers.
+              </div>
+            </div>
+            <div *ngIf="!isDateValid">Cannot use future date</div>
+          </div>
+          <div class="form-group">
+            <label>Author</label>
+            <input
+              type="text"
+              maxlength="50"
+              class="form-control"
+              name="author"
+              [(ngModel)]="book.author"
+            />
+          </div>
+          <div class="form-group modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+              (click)="closeAddModal()"
+            >
+              Close
+            </button>
+            <button
+              class="btn btn-primary btn-block"
+              [disabled]="addForm.invalid || book.date > currYear"
+            >
+              Save changes
+            </button>
+          </div>
+          <div *ngIf="isTitleExists">This book title is already exists</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

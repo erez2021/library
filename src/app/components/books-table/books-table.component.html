@@ -1,0 +1,30 @@
+<div class="book-table-component">
+  <app-modal *ngIf="isEditModalOpen" [display]="display" [bookToEdit]="bookToEdit" (saveBookDetails)="saveBookDetails($event)" (closeModal)="closeEditModal()"></app-modal>
+  <app-add-modal *ngIf="isAddModalOpen"  [display]="display" (closeAddingModal)="closeAddModal()"  (addBook)="addBook($event)" [booksForDisplay]="booksForDisplay"></app-add-modal>
+  <div class="modal-background" *ngIf="isEditModalOpen || isAddModalOpen"></div>
+    <table class="table table-dark">
+        <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Publish date</th>
+              <th scope="col">Author</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+    <tbody>
+    <tr class="book-table-row" *ngFor="let book of booksForDisplay">
+        <td>{{book.title  | replacePipe}}</td>
+        <td>{{book.date}}</td>
+        <td>{{book.author}}</td>
+        <td>
+          <button type="button" (click)="openEditModal(book)"  class="btn btn-primary">Edit</button>
+        <button type="button" class="btn btn-danger" (click)="deleteBook(book)">Delete</button>
+        </td>
+    </tr>
+</tbody>
+</table>
+<button type="button"   class="btn btn-primary" (click)="openAddModal()">Add New Book</button>
+
+</div>
+
+
